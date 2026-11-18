@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernskript Staatsgewalten, Verwaltung & EU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout: feste Inhaltsleiste links, Lerntext rechts; rot = Österreich-Kapitel, blau = EU-Kapitel */
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --ink: #1b1f27;
+  --muted: #5a6170;
+  --line: #dde0e6;
+  --accent: #b3122e;
+  --accent-soft: #fbe9ec;
+  --eu: #1f4fa3;
+  --eu-soft: #e7eefb;
+  --ok: #1d7a46;
+  --font-display: "Literata", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --surface: #1a1e26; --ink: #e7e9ee; --muted: #9aa1ae; --line: #2c323d;
+    --accent: #ff6b81; --accent-soft: #3a1c23; --eu: #86a8ec; --eu-soft: #1a2640; --ok: #5cc98b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151b; --surface: #1a1e26; --ink: #e7e9ee; --muted: #9aa1ae; --line: #2c323d;
+  --accent: #ff6b81; --accent-soft: #3a1c23; --eu: #86a8ec; --eu-soft: #1a2640; --ok: #5cc98b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.05rem; font-family: var(--font-body); font-weight: 700; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 1.3em; display: grid; gap: .3em; }
+strong { font-weight: 700; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.wrap { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px; max-width: 1240px; margin: 0 auto; padding: 24px 24px 80px; }
+nav.toc {
+  position: sticky; top: 16px; align-self: start; max-height: calc(100vh - 32px); overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px;
+  display: grid; gap: 12px;
+}
+.toc-title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.progress { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s; }
+.toc-group { display: grid; gap: 2px; }
+.toc-group h4 { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 4px; }
+.toc-link { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-size: .95rem; }
+.toc-link:hover { background: var(--bg); }
+.toc-link .dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--line); flex: none; }
+.toc-link.done .dot { background: var(--ok); border-color: var(--ok); }
+.toc-link .num { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 2.6em; font-size: .85rem; }
+
+main { display: grid; gap: 28px; min-width: 0; }
+header.top { display: grid; gap: 8px; padding: 8px 0 4px; }
+header.top p { color: var(--muted); max-width: 65ch; }
+
+section.chap {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 28px; display: grid; gap: 18px; scroll-margin-top: 16px;
+  border-top: 4px solid var(--accent);
+}
+section.chap.eu { border-top-color: var(--eu); }
+.chap-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.chap-head .kicker { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chap-head > div { display: grid; gap: 4px; }
+.done-btn {
+  font: inherit; font-size: .9rem; cursor: pointer; border: 1px solid var(--line); background: var(--bg);
+  color: var(--ink); padding: 6px 12px; border-radius: 999px; display: inline-flex; gap: 6px; align-items: center;
+}
+.done-btn[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+.prose { display: grid; gap: 12px; max-width: 72ch; }
+.sub { display: grid; gap: 10px; }
+.sub + .sub { padding-top: 14px; border-top: 1px dashed var(--line); }
+
+.box { border-radius: 8px; padding: 14px 16px; display: grid; gap: 8px; background: var(--accent-soft); border-left: 4px solid var(--accent); }
+.eu .box { background: var(--eu-soft); border-left-color: var(--eu); }
+.box.neutral { background: var(--bg); border-left-color: var(--muted); }
+.box .label { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--accent); }
+.eu .box .label { color: var(--eu); }
+.box.neutral .label { color: var(--muted); }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { background: var(--bg); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+table.plain td:first-child { font-weight: 400; }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.card { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.card h4 { color: var(--accent); }
+.eu .card h4 { color: var(--eu); }
+.steps { counter-reset: s; list-style: none; padding: 0; gap: 8px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 28px 1fr; gap: 10px; }
+.steps li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: .85rem; display: grid; place-items: center; }
+.eu .steps li::before { background: var(--eu); }
+.chain { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+.tag { display: inline-block; font-size: .8rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.eu .tag { background: var(--eu-soft); color: var(--eu); }
+.muted { color: var(--muted); }
+
+/* Lernkarten */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.flash {
+  font: inherit; text-align: left; cursor: pointer; border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  border-radius: 10px; padding: 14px; display: grid; gap: 8px; align-content: start; min-height: 120px;
+}
+.flash .q { font-weight: 700; }
+.flash .a { display: none; border-top: 1px solid var(--line); padding-top: 8px; }
+.flash[aria-expanded="true"] { background: var(--surface); border-color: var(--ok); }
+.flash[aria-expanded="true"] .a { display: block; }
+.flash .hint { font-size: .82rem; color: var(--muted); }
+.flash[aria-expanded="true"] .hint { display: none; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { font: inherit; font-size: .9rem; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; border-radius: 6px; }
+.btn:hover { border-color: var(--muted); }
+
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; padding: 16px 16px 60px; gap: 20px; }
+  nav.toc { position: static; max-height: none; }
+  section.chap { padding: 20px 16px; }
+  h1 { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Inhalt">
+  <div class="toc-title">Inhalt</div>
+  <div class="progress">
+    <span id="progress-text">0 von 0 Abschnitten gelernt</span>
+    <div class="bar"><span id="progress-bar"></span></div>
+  </div>
+  <div class="toc-group">
+    <h4>Kontrolle der Staatsgewalten</h4>
+    <a class="toc-link" href="#k26" data-target="k26"><span class="dot"></span><span class="num">2.6</span>Überblick & Grafik</a>
+    <a class="toc-link" href="#k261" data-target="k261"><span class="dot"></span><span class="num">2.6.1</span>Gesetzgebung</a>
+    <a class="toc-link" href="#k262" data-target="k262"><span class="dot"></span><span class="num">2.6.2</span>Verwaltung</a>
+    <a class="toc-link" href="#k263" data-target="k263"><span class="dot"></span><span class="num">2.6.3</span>Gerichtsorganisation</a>
+    <a class="toc-link" href="#k264" data-target="k264"><span class="dot"></span><span class="num">2.6.4</span>VwGH</a>
+    <a class="toc-link" href="#k265" data-target="k265"><span class="dot"></span><span class="num">2.6.5</span>VfGH</a>
+  </div>
+  <div class="toc-group">
+    <h4>Verwaltung</h4>
+    <a class="toc-link" href="#k31" data-target="k31"><span class="dot"></span><span class="num">3.1</span>Aufbau der Verwaltung</a>
+    <a class="toc-link" href="#k31b" data-target="k31b"><span class="dot"></span><span class="num">3.1</span>Land, Selbstverw., Gemeinde</a>
+    <a class="toc-link" href="#k31c" data-target="k31c"><span class="dot"></span><span class="num">3.1</span>Rechtsschutz & Haftung</a>
+    <a class="toc-link" href="#k321" data-target="k321"><span class="dot"></span><span class="num">3.2.1</span>Bundespräsident/in</a>
+    <a class="toc-link" href="#k322" data-target="k322"><span class="dot"></span><span class="num">3.2.2</span>Bundesregierung</a>
+    <a class="toc-link" href="#k331" data-target="k331"><span class="dot"></span><span class="num">3.3.1</span>Staatsbürgerschaft</a>
+  </div>
+  <div class="toc-group">
+    <h4>Europäische Union</h4>
+    <a class="toc-link" href="#k42" data-target="k42"><span class="dot"></span><span class="num">4.2</span>Grundstrukturen</a>
+    <a class="toc-link" href="#k421" data-target="k421"><span class="dot"></span><span class="num">4.2.1</span>Vertrag von Lissabon</a>
+    <a class="toc-link" href="#k422" data-target="k422"><span class="dot"></span><span class="num">4.2.2</span>Binnenmarkt</a>
+    <a class="toc-link" href="#k423" data-target="k423"><span class="dot"></span><span class="num">4.2.3</span>Beitritt & Austritt</a>
+  </div>
+  <div class="toc-group">
+    <h4>Üben</h4>
+    <a class="toc-link" href="#lernkarten" data-target="lernkarten"><span class="dot"></span><span class="num">✎</span>Lernkarten</a>
+  </div>
+</nav>
+
+<main>
+<header class="top">
+  <h1>Lernskript: Staatsgewalten, Verwaltung & EU</h1>
+  <p>Zusammenfassung der Kapitel 2.6 bis 4.2.3. Hake jeden Abschnitt mit „Gelernt“ ab, wenn du ihn kannst. Ganz unten findest du Lernkarten zum Selbsttest.</p>
+</header>
+
+<!-- ========== 2.6 ========== -->
+<section class="chap" id="k26">
+  <div class="chap-head"><div><span class="kicker">2.6</span><h2>Kontrolle der Staatsgewalten</h2></div><button class="done-btn" data-id="k26" aria-pressed="false">Gelernt</button></div>
+  <div class="prose">
+    <p>Die Staatsmacht ist auf mehrere Institutionen aufgeteilt, die sich <strong>gegenseitig kontrollieren und beeinflussen</strong>. Das Volk wirkt über Wahlen mit: Nationalratswahl und Bundespräsidentenwahl.</p>
+  </div>
+  <div class="box">
+    <span class="label">Die 4 Kontrollformen</span>
+    <div class="grid2">
+      <div>1. Politische Kontrolle</div><div>2. Rechtliche Kontrolle</div>
+      <div>3. Wirtschaftliche bzw. finanzielle Kontrolle</div><div>4. Missstandskontrolle</div>
+    </div>
+  </div>
+  <h3>Wer kontrolliert wen?</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kontrolle durch</th><th>über</th><th>Instrumente</th></tr></thead>
+    <tbody>
+      <tr><td>Nationalrat</td><td>Bundesregierung</td><td><strong>politisch:</strong> Misstrauensvotum, Untersuchungsausschüsse, Fragerecht, Zitationsrecht, Resolutionsrecht<br><strong>rechtlich:</strong> Ministeranklage beim VfGH<br><strong>finanziell:</strong> Rechnungshof</td></tr>
+      <tr><td>Nationalrat</td><td>Bundespräsident/in</td><td>Einberufung der Bundesversammlung, um eine Volksabstimmung über die Absetzung herbeizuführen</td></tr>
+      <tr><td>Bundespräsident/in</td><td>Bundesregierung</td><td>Entlassung des Bundeskanzlers bzw. der ganzen Regierung; Entlassung einzelner Mitglieder nur auf Vorschlag des BK.<br>Enthebung in 3 Fällen: auf eigenen Wunsch, nach Misstrauensvotum, bei Verurteilung durch den VfGH</td></tr>
+      <tr><td>Bundespräsident/in</td><td>Nationalrat</td><td>Auflösung auf Vorschlag der Bundesregierung; Auflösung, wenn die Volksabstimmung über seine Absetzung scheitert</td></tr>
+      <tr><td>Bundesversammlung</td><td>Bundespräsident/in</td><td>Angelobung</td></tr>
+      <tr><td>VfGH</td><td>Gesetzgebung, Regierung</td><td>Gesetzesprüfung, Ministeranklage</td></tr>
+      <tr><td>VwGH</td><td>Verwaltung</td><td>Kontrolle der Verwaltung</td></tr>
+      <tr><td>Gerichte</td><td>Gerichte</td><td>Instanzenzug (z. B. BG → LG → OGH); Grundrechtskontrolle durch OGH, VfGH, VwGH</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ========== 2.6.1 ========== -->
+<section class="chap" id="k261">
+  <div class="chap-head"><div><span class="kicker">2.6.1</span><h2>Kontrolle der Gesetzgebung</h2></div><button class="done-btn" data-id="k261" aria-pressed="false">Gelernt</button></div>
+  <div class="grid2">
+    <div class="card"><h4>Politische Kontrolle</h4><p>Durch die Bürger/innen (<strong>Wahlen</strong>) und die <strong>Medien</strong> („4. Gewalt im Staat“). Der Bundespräsident kann auf Vorschlag der Bundesregierung den <strong>Nationalrat auflösen</strong>.</p></div>
+    <div class="card"><h4>Rechtliche Kontrolle</h4><p>Durch den <strong>Verfassungsgerichtshof (VfGH)</strong>. Dazu kommen das <strong>Einspruchsrecht des Bundesrats</strong> bei Bundesgesetzen und das der Bundesregierung bei Landesgesetzen.</p></div>
+  </div>
+</section>
+
+<!-- ========== 2.6.2 ========== -->
+<section class="chap" id="k262">
+  <div class="chap-head"><div><span class="kicker">2.6.2</span><h2>Kontrolle der Verwaltung</h2></div><button class="done-btn" data-id="k262" aria-pressed="false">Gelernt</button></div>
+
+  <div class="sub">
+    <h3>Rechtliche Kontrolle</h3>
+    <ul>
+      <li>Erfolgt durch die <strong>Verfassungs- und Verwaltungsgerichtsbarkeit</strong>: Alle Verwaltungsakte werden von unabhängigen Gerichten kontrolliert.</li>
+      <li>Übergeordnete Behörden können untergeordneten <strong>Weisungen</strong> erteilen.</li>
+      <li><strong>Ministeranklage</strong> beim VfGH gegen Regierungsmitglieder, ebenso gegen den Bundespräsidenten.</li>
+      <li>Alle Verwaltungsorgane haften <strong>strafrechtlich</strong> (z. B. Missbrauch der Amtsgewalt) und <strong>disziplinär</strong>, außerdem nach <strong>Organ- und Amtshaftung</strong> für Schäden.</li>
+    </ul>
+    <div class="box neutral"><span class="label">Begriff</span><p><strong>Verwaltungsakte</strong> = Verordnungen, Bescheide, Maßnahmen unmittelbarer behördlicher Befehls- und Zwangsgewalt</p></div>
+  </div>
+
+  <div class="sub">
+    <h3>Politische Kontrolle</h3>
+    <ul>
+      <li>Der <strong>Bundespräsident</strong> ist dem Volk verantwortlich und kann durch eine <strong>Volksabstimmung abgesetzt</strong> werden.</li>
+      <li><strong>Misstrauensvotum:</strong> Der NR spricht der Regierung oder einzelnen Mitgliedern das Misstrauen aus. Anwesend sein muss ½ der Abgeordneten, nötig ist die Mehrheit der abgegebenen Stimmen. Folge: <strong>Amtsenthebung</strong> durch den BP.</li>
+      <li><strong>Untersuchungsausschüsse (Enqueterecht):</strong> untersuchen Vorgänge in der Verwaltung. Schon <strong>¼ der Abgeordneten</strong> kann einen verlangen: ein <strong>Minderheitenrecht</strong> und wichtiges Recht der Opposition. Bund, Länder, Gemeinden usw. müssen Akten herausgeben; bei Streit entscheidet der VfGH. Beispiele: Ibiza-U-Ausschuss, Eurofighter-U-Ausschuss.</li>
+      <li><strong>Fragerecht:</strong> schriftliche Anfragen, dringliche Anfrage, Fragestunde, aktuelle Stunde</li>
+      <li><strong>Zitationsrecht:</strong> NR, BR und Ausschüsse können die Anwesenheit von Regierungsmitgliedern verlangen.</li>
+      <li><strong>Resolutionsrecht:</strong> Abgeordnete beschließen Wünsche über die Ausübung der Verwaltung.</li>
+    </ul>
+  </div>
+
+  <div class="sub">
+    <h3>Finanzielle Kontrolle: Rechnungshof (RH)</h3>
+    <p class="prose">Der unabhängige RH prüft die <strong>Richtigkeit der Haushaltsführung</strong> und die <strong>sparsame und wirtschaftliche Verwendung öffentlicher Gelder</strong>.</p>
+    <div class="grid2">
+      <div class="card"><h4>Er prüft</h4><ul>
+        <li>Bund, Länder, Gemeinden mit <strong>mehr als 10.000 Einwohnern</strong></li>
+        <li>Stiftungen, Fonds, Anstalten, die Bundesorgane verwalten</li>
+        <li>Kammern</li>
+        <li>Unternehmen mit <strong>mehr als 50 %</strong> öffentlicher Beteiligung</li>
+        <li>Sozialversicherungsträger</li>
+        <li>politische Parteien</li>
+      </ul></div>
+      <div class="card"><h4>Wichtig</h4><ul>
+        <li>Schon <strong>20 Abgeordnete</strong> können eine Prüfung verlangen (Recht der Opposition).</li>
+        <li>Berichte gehen an den NR (bzw. die Landtage) und werden im <strong>Rechnungshofausschuss</strong> behandelt.</li>
+        <li><strong>Keine eigenen Sanktionen</strong>, aber öffentliche Diskussion und Reformdruck (Beispiel: Eurofighter).</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Missstandskontrolle: Volksanwaltschaft</h3>
+    <p class="prose">Unabhängige Kontrolleinrichtung des Parlaments: <strong>3 Mitglieder</strong>, gewählt auf <strong>6 Jahre</strong>.</p>
+    <ul>
+      <li>prüft behauptete Missstände in der Verwaltung, wenn <strong>kein Rechtsmittel (mehr)</strong> zur Verfügung steht</li>
+      <li>kann auch <strong>von Amts wegen</strong> tätig werden, also ohne Antrag</li>
+      <li>kann <strong>Verordnungen vom VfGH prüfen lassen</strong></li>
+      <li><strong>schützt und fördert die Menschenrechte</strong>, vor allem in Strafvollzugsanstalten, Polizeianhaltezentren und geschlossenen Anstalten</li>
+    </ul>
+    <div class="box"><span class="label">Merke</span><p>Nur <strong>Empfehlungen</strong>, <strong>keine Sanktionen</strong>. Behörden müssen aber reagieren: entsprechen oder begründen, warum nicht. Berichte gehen an NR und BR (bzw. Landtage); die ORF-Sendung erzeugt politischen Reformdruck.</p></div>
+  </div>
+</section>
+
+<!-- ========== 2.6.3 ========== -->
+<section class="chap" id="k263">
+  <div class="chap-head"><div><span class="kicker">2.6.3</span><h2>Ordentliche Gerichtsbarkeit und Gerichtsorganisation</h2></div><button class="done-btn" data-id="k263" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Urteile werden durch höhere Gerichte im <strong>Instanzenzug</strong> kontrolliert. Der Instanzenzug zeigt die Hierarchie der Gerichte.</p>
+  <div class="grid2">
+    <div class="card"><h4>Ordentliche Gerichte</h4>
+      <p><strong>Zivilsachen</strong> (streitig und außerstreitig):<br><span class="chain">BG → LG → OGH</span> oder <span class="chain">LG → OLG → OGH</span></p>
+      <p><strong>Strafsachen:</strong><br><span class="chain">BG → LG</span>, <span class="chain">LG → OLG</span> oder <span class="chain">LG → OGH</span></p>
+    </div>
+    <div class="card"><h4>Gerichte des öffentlichen Rechts</h4>
+      <p><strong>Verwaltungsgerichtsbarkeit:</strong> Landesverwaltungsgerichte, Bundesverwaltungsgericht, Bundesfinanzgericht, VwGH</p>
+      <p><strong>Verfassungsgerichtsbarkeit:</strong> VfGH</p>
+    </div>
+  </div>
+  <p class="muted">BG = Bezirksgericht · LG = Landesgericht · OLG = Oberlandesgericht (Wien, Graz, Linz, Innsbruck) · OGH = Oberster Gerichtshof</p>
+  <div class="box"><span class="label">Richter/innen sind</span><p><strong>unabhängig</strong> (weisungsfrei), <strong>unabsetzbar</strong> und <strong>unversetzbar</strong>. Rechtspfleger/innen unterstützen sie. Wer welchen Fall bekommt, regeln <strong>feste Geschäftsverteilungen</strong>.</p></div>
+  <h3>Verfahrensgrundsätze</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Grundsatz</th><th>Bedeutung</th></tr></thead>
+    <tbody>
+      <tr><td>Öffentlichkeit</td><td>Verhandlungen sind grundsätzlich öffentlich; Ausnahmen z. B. bei Geschäftsgeheimnissen oder aus Gründen der Sittlichkeit</td></tr>
+      <tr><td>Mündlichkeit</td><td>Verhandlungen finden mündlich statt</td></tr>
+      <tr><td>„Waffengleichheit“</td><td>Beide Parteien haben die gleichen verfahrensrechtlichen Möglichkeiten</td></tr>
+      <tr><td>Ermittlung des Sachverhalts</td><td>Was nicht eindeutig bewiesen ist, darf nicht Grundlage einer Entscheidung sein</td></tr>
+      <tr><td>Unmittelbarkeit</td><td>Grundlage ist nur, was sich vor dem Gericht ereignet hat; urteilen dürfen nur Richter, die an der ganzen Verhandlung teilgenommen haben</td></tr>
+      <tr><td>Freie Beweiswürdigung</td><td>Keine festen Beweisregeln. Beweismittel: Zeugen, Urkunden, Sachverständige, Augenschein, Parteienvernehmung</td></tr>
+      <tr><td>Überprüfbarkeit</td><td>Durch den Instanzenzug; oberste Instanz in Zivil- und Strafsachen ist der OGH</td></tr>
+      <tr><td>Laienbeteiligung</td><td>Schöffen und Geschworene im Strafverfahren, Beisitzer in Arbeits- und Sozialgerichtsverfahren</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ========== 2.6.4 ========== -->
+<section class="chap" id="k264">
+  <div class="chap-head"><div><span class="kicker">2.6.4</span><h2>Verwaltungsgerichtshof (VwGH)</h2></div><button class="done-btn" data-id="k264" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Stellt gemeinsam mit den Verwaltungsgerichten das <strong>gesetzmäßige Handeln der Behörden</strong> sicher. Gegen Entscheidungen des VwGH gibt es <strong>kein Rechtsmittel</strong>.</p>
+  <h3>Er entscheidet in 3 Fällen</h3>
+  <ol class="steps">
+    <li><span><strong>Revisionen</strong> gegen Entscheidungen der Verwaltungsgerichte, wenn eine <strong>Rechtsfrage von grundsätzlicher Bedeutung</strong> vorliegt. Er kann aufheben oder selbst in der Sache entscheiden.</span></li>
+    <li><span><strong>Säumnisbeschwerden</strong>, wenn eine Behörde ihrer Entscheidungspflicht nicht nachkommt (meist innerhalb von 6 Monaten)</span></li>
+    <li><span><strong>Kompetenzkonflikte</strong> zwischen Verwaltungsgerichten oder zwischen einem Verwaltungsgericht und dem VwGH</span></li>
+  </ol>
+  <div class="box"><span class="label">Nicht zuständig</span><p>für Zivil- und Strafsachen und für die Prüfung, ob ein Gesetz verfassungswidrig oder eine Verordnung gesetzwidrig ist (das macht der VfGH).</p></div>
+  <p class="muted">2023: rund 7.000 neue Fälle, durchschnittliche Verfahrensdauer 5,5 Monate.</p>
+</section>
+
+<!-- ========== 2.6.5 ========== -->
+<section class="chap" id="k265">
+  <div class="chap-head"><div><span class="kicker">2.6.5</span><h2>Verfassungsgerichtshof (VfGH)</h2></div><button class="done-btn" data-id="k265" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Der „Hüter der Verfassung“ kontrolliert die Einhaltung der <strong>Verfassung und der Grundrechte</strong>. Anders als der VwGH kann er <strong>verfassungswidrige Gesetze und Verordnungen aufheben</strong>. Entscheidungen der Zivilgerichte kontrolliert er nicht. <strong>EU-Verordnungen</strong> prüft nur der <strong>EuGH</strong>.</p>
+  <div class="sub">
+    <h3>Gesetzes- und Verordnungsprüfung</h3>
+    <div class="grid3">
+      <div class="card"><h4>Im Anlassfall</h4><p>Verdacht in einem laufenden Verfahren, dass eine Vorschrift verfassungs- oder gesetzwidrig ist: Das Verfahren wird unterbrochen und der VfGH prüft (Antrag eines Gerichts, Parteiantrag oder von Amts wegen).</p></div>
+      <div class="card"><h4>Ohne Anlassfall</h4><p><strong>Abstrakte Normenkontrolle</strong>, nur auf Antrag einer befugten Stelle (z. B. Volksanwaltschaft).</p></div>
+      <div class="card"><h4>Individualantrag</h4><p>Eine Person ist <strong>unmittelbar</strong> in ihren Rechten verletzt und der Umweg über ein Verfahren ist ihr <strong>unzumutbar</strong>.</p></div>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Weitere Zuständigkeiten</h3>
+    <div class="table-wrap"><table>
+      <tbody>
+        <tr><td>Beschwerden gegen Entscheidungen der Verwaltungsgerichte</td><td>Bei Grundrechtsverletzung oder rechtswidriger Rechtsgrundlage. Der VfGH entscheidet <strong>nicht in der Sache</strong>, sondern <strong>hebt nur auf</strong>; das Verwaltungsgericht entscheidet neu.</td></tr>
+        <tr><td>Anfechtung von Wahlen</td><td>Beispiel: Bundespräsidentenwahl 2016 musste wiederholt werden.</td></tr>
+        <tr><td>Anklagen gegen oberste Staatsorgane</td><td>„Ministeranklage“, z. B. Anklage des BP durch Beschluss der Bundesversammlung</td></tr>
+        <tr><td>Streitigkeiten bei U-Ausschüssen</td><td>Beispiel: Rechtsfragen im Ibiza-U-Ausschuss</td></tr>
+        <tr><td>Kompetenzkonflikte</td><td>Wenn unklar ist, welche Behörde zuständig ist</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ========== 3.1 ========== -->
+<section class="chap" id="k31">
+  <div class="chap-head"><div><span class="kicker">3.1</span><h2>Aufbau der österreichischen Verwaltung</h2></div><button class="done-btn" data-id="k31" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Die Verwaltung vollzieht Bundes- und Landesgesetze und ist <strong>stark dezentralisiert</strong>.</p>
+  <div class="grid2">
+    <div class="card"><h4>Oberste Verwaltungsorgane</h4><p><strong>politisch verantwortlich</strong>, z. B. Bundespräsident/in, Mitglieder der Bundesregierung</p></div>
+    <div class="card"><h4>Nachgeordnete Behörden</h4><p><strong>weisungsgebunden</strong>, z. B. Magistrate, Bezirkshauptmannschaften, Finanzämter</p></div>
+  </div>
+  <div class="box neutral"><span class="label">Gliederung der Verwaltung</span>
+    <ul>
+      <li><strong>Privatwirtschaftsverwaltung</strong></li>
+      <li><strong>Hoheitsverwaltung</strong>
+        <ul>
+          <li>Bundesverwaltung: unmittelbar oder mittelbar</li>
+          <li>Landesverwaltung</li>
+          <li>Selbstverwaltung: Gemeinden, Sozialversicherungsträger, ÖH, Kammern</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="grid2">
+    <div class="card"><h4>Hoheitsverwaltung</h4><p>Eine Behörde setzt <strong>Rechtsakte</strong> mit staatlicher Hoheitsgewalt: Bescheide, Verordnungen, Weisungen, Befehls- und Zwangsgewalt.</p><p><span class="tag">Rechtsschutz</span> Verwaltungsgerichte + VwGH</p></div>
+    <div class="card"><h4>Privatwirtschaftsverwaltung</h4><p>Der Staat handelt <strong>wie eine Privatperson</strong> und schließt Verträge (Kauf-, Werk-, Mietverträge).</p><p><span class="tag">Rechtsschutz</span> ordentliche Gerichte</p></div>
+  </div>
+  <div class="sub">
+    <h3>Unmittelbare und mittelbare Bundesverwaltung</h3>
+    <div class="grid2">
+      <div class="card"><h4>Unmittelbar = Ausnahme</h4><p>Der Bund vollzieht durch <strong>eigene Bundesbehörden</strong>.</p><p class="muted">Beispiele: BFA, Bundesdenkmalamt, Umweltbundesamt, DSN, AMS, Finanzämter, Landespolizeidirektionen, Botschaften</p></div>
+      <div class="card"><h4>Mittelbar = Regel</h4><p>Bundessachen werden von <strong>Landesorganen</strong> vollzogen (Landeshauptleute, Bezirksverwaltungsbehörden). Diese sind dabei an die <strong>Weisungen der Bundesminister bzw. Bundesregierung gebunden</strong>.</p><p class="muted">Beispiele: Niederlassungs- und Aufenthaltsrecht, Gewerberecht, Führerscheinrecht</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="chap" id="k31b">
+  <div class="chap-head"><div><span class="kicker">3.1</span><h2>Landesverwaltung, Selbstverwaltung, Gemeinde</h2></div><button class="done-btn" data-id="k31b" aria-pressed="false">Gelernt</button></div>
+  <div class="sub">
+    <h3>Landesverwaltung</h3>
+    <ul>
+      <li>Vollzieht Landesgesetze und, als mittelbare Bundesverwaltung, auch Bundesgesetze.</li>
+      <li>Oberstes Organ: <strong>Landesregierung</strong>, <strong>vom Landtag gewählt</strong> (Landeshauptmann/-frau, Stellvertreter, Landesräte). Sie ist dem Landtag verantwortlich.</li>
+      <li>Auch hier gibt es Misstrauensvotum, Untersuchungsausschüsse und Landesrechnungshöfe.</li>
+      <li>1. Instanz meist die <strong>Bezirkshauptmannschaften</strong> (in Wien der Magistrat).</li>
+      <li>Landeshauptleute haben realpolitisch große Macht.</li>
+    </ul>
+  </div>
+  <div class="sub">
+    <h3>Selbstverwaltung</h3>
+    <div class="box"><span class="label">Definition</span><p>Wahrnehmung öffentlicher Aufgaben (auch hoheitlicher) durch <strong>eigene, vom Staat unabhängige Rechtsträger</strong>. Das bedeutet weitere Dezentralisierung.</p></div>
+    <p>Selbstverwaltungskörper: Gemeinden, Kammern, Sozialversicherungsträger, ÖH.</p>
+    <div class="table-wrap"><table class="plain">
+      <thead><tr><th>Eigener Wirkungsbereich</th><th>Übertragener Wirkungsbereich</th></tr></thead>
+      <tbody>
+        <tr><td><strong>weisungsfrei</strong>, aber staatliche Aufsicht und Kontrolle (Ministerien, Rechnungshof)</td><td><strong>weisungsgebunden</strong>; handelt funktionell als Behörde von Bund oder Land</td></tr>
+        <tr><td>kein Instanzenzug nach außen, nur innerhalb (z. B. Berufung an den Gemeinderat gegen einen Bescheid des Bürgermeisters)</td><td>Instanzenzug an Organe außerhalb möglich</td></tr>
+        <tr><td>Rechtsschutz: Landesverwaltungsgericht</td><td>Rechtsschutz: Landesverwaltungsgericht</td></tr>
+        <tr><td>Gemeinde: Bestellung der Gemeindeorgane, Rettungs- und Bestattungswesen, örtliche Baupolizei, Straßenpolizei, Schulen und Kindergärten</td><td>Gemeinde: Mitwirkung bei Wahlen und Volksbegehren, Meldewesen, Standesamt, Geburts-, Heirats- und Sterbeurkunden</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="sub">
+    <h3>Gemeindeverwaltung</h3>
+    <ul>
+      <li>Gemeinden sind die <strong>dritte Gebietskörperschaft</strong>; alle haben grundsätzlich die gleiche Rechtsstellung.</li>
+      <li>Sonderregeln für <strong>Statutarstädte</strong> (z. B. Rust) und Wien: Der Magistrat erfüllt Landes- und Gemeindeaufgaben.</li>
+      <li><strong>Kein Anteil an Gesetzgebung und Gerichtsbarkeit.</strong> Organisation durch Landesgesetze (z. B. NÖ Gemeindeordnung).</li>
+    </ul>
+    <h4>Organe der Gemeinde</h4>
+    <div class="grid2">
+      <div class="card"><h4>Gemeinderat</h4><p>direkt gewählt (auch ansässige EU-Bürger); „Gemeindeparlament“; oberstes Organ im eigenen Wirkungsbereich; beschließt u. a. Verordnungen</p></div>
+      <div class="card"><h4>Gemeindevorstand / Stadtrat / Stadtsenat</h4><p>vom Gemeinderat gewählt; „Gemeinderegierung“; dem Gemeinderat verantwortlich</p></div>
+      <div class="card"><h4>Bürgermeister/in</h4><p>direkt gewählt (Ausnahme: indirekt in Wien, NÖ, Steiermark); erlässt Bescheide in 1. Instanz; Weisungen vom Gemeinderat (eigener WB) bzw. von Bundesorganen (übertragener WB)</p></div>
+      <div class="card"><h4>Gemeindeamt</h4><p>Hilfsorgan; in Statutarstädten: Magistrat</p></div>
+    </div>
+    <div class="box neutral"><span class="label">Beispiele</span>
+      <ul>
+        <li><strong>Lärmerregung:</strong> ortspolizeiliche Verordnung im eigenen WB, z. B. Rasenmähverbot zu bestimmten Zeiten (Amstetten)</li>
+        <li><strong>Baubewilligung:</strong> erteilt der Bürgermeister</li>
+        <li><strong>Bettelverbot:</strong> zeitlich beschränkt, z. B. vor Lokalen oder Parkscheinautomaten</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="chap" id="k31c">
+  <div class="chap-head"><div><span class="kicker">3.1</span><h2>Rechtsschutz und Haftung</h2></div><button class="done-btn" data-id="k31c" aria-pressed="false">Gelernt</button></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Verwaltungsbereich</th><th>Rechtsschutz</th></tr></thead>
+    <tbody>
+      <tr><td>Unmittelbare Bundesverwaltung</td><td>Bundesverwaltungsgericht (z. B. gegen BFA) bzw. Bundesfinanzgericht (Finanzamt) → VwGH oder VfGH</td></tr>
+      <tr><td>Mittelbare Bundesverwaltung</td><td>Landesverwaltungsgericht → VwGH oder VfGH</td></tr>
+      <tr><td>Landes- und Gemeindeverwaltung</td><td>Landesverwaltungsgericht → VwGH oder VfGH</td></tr>
+      <tr><td>Privatwirtschaftsverwaltung</td><td><span class="chain">BG → LG → OGH</span> bzw. <span class="chain">LG → OLG → OGH</span></td></tr>
+    </tbody>
+  </table></div>
+  <h3>Amts-, Organ- und Staatshaftung</h3>
+  <div class="grid3">
+    <div class="card"><h4>Amtshaftung</h4><p>Staatsorgan schädigt bei hoheitlichem Handeln schuldhaft und rechtswidrig <strong>Bürger/innen</strong>. Es haftet der <strong>Staat</strong>, nicht das Organ. Der Staat hat unter Umständen einen <strong>Rückgriffsanspruch</strong>.</p></div>
+    <div class="card"><h4>Organhaftung</h4><p>Organ schädigt <strong>den Staat selbst</strong> (z. B. Polizist verursacht Totalschaden am Polizeiauto). Das Organ haftet; 1. Instanz: Arbeits- und Sozialgericht.</p></div>
+    <div class="card"><h4>Staatshaftung</h4><p>Ein Staat verstößt gegen <strong>EU-Recht</strong> und schädigt eine Person (z. B. Richtlinie nicht rechtzeitig umgesetzt).</p></div>
+  </div>
+  <p class="muted">Bei Schäden in der Privatwirtschaftsverwaltung gilt das allgemeine Schadenersatzrecht.</p>
+</section>
+
+<!-- ========== 3.2.1 ========== -->
+<section class="chap" id="k321">
+  <div class="chap-head"><div><span class="kicker">3.2 · 3.2.1</span><h2>Oberste Verwaltungsorgane & Bundespräsident/in</h2></div><button class="done-btn" data-id="k321" aria-pressed="false">Gelernt</button></div>
+  <div class="box"><span class="label">3.2 Oberste Verwaltungsorgane des Bundes</span><p>Bundespräsident/in, Bundesregierung als <strong>Kollegialorgan</strong> und ihre einzelnen Mitglieder. Sie sind <strong>an keine Weisungen gebunden</strong>; stattdessen tragen sie <strong>rechtliche und politische Verantwortung</strong>.</p></div>
+  <div class="grid2">
+    <div class="card"><h4>Wahl</h4><ul>
+      <li><strong>Direkte Volkswahl</strong></li>
+      <li>Gewählt ist, wer <strong>mehr als die Hälfte</strong> der gültigen Stimmen hat, sonst <strong>Stichwahl</strong> der zwei Stärksten</li>
+      <li>Passives Wahlrecht ab <strong>35 Jahren</strong></li>
+    </ul></div>
+    <div class="card"><h4>Amt</h4><ul>
+      <li>Amtsdauer <strong>6 Jahre</strong>, <strong>einmalige Wiederwahl</strong> für die folgende Periode</li>
+      <li>Angelobung durch die <strong>Bundesversammlung</strong></li>
+      <li>Umfassende <strong>Immunität</strong>: Verfolgung nur mit Zustimmung der Bundesversammlung</li>
+    </ul></div>
+  </div>
+  <div class="box neutral"><span class="label">Das Amt endet durch</span>
+    <ul>
+      <li>Ablauf der Amtsdauer, Tod, Rücktritt (Amtsverzicht)</li>
+      <li>verurteilendes Erkenntnis des VfGH nach Anklage durch die Bundesversammlung</li>
+      <li>Verurteilung wegen bestimmter strafbarer Handlungen</li>
+      <li>Absetzung durch Volksabstimmung (siehe 2.6)</li>
+    </ul>
+  </div>
+  <p class="prose">Er hat eine <strong>Schlüsselstellung</strong> für das Zusammenspiel der Staatsgewalten, besonders bei der <strong>Regierungsbildung</strong> und in <strong>Krisen</strong>. Bei den meisten seiner rund 50 Aufgaben ist er aber <strong>an einen Vorschlag der Bundesregierung oder eines Ministers gebunden</strong>. Seit 26. Jänner 2023: Alexander Van der Bellen in seiner 2. Amtszeit.</p>
+  <h3>Wichtigste Aufgaben</h3>
+  <div class="grid2">
+    <ul>
+      <li>Vertretung der Republik nach außen, Abschluss von Staatsverträgen</li>
+      <li>Beurkundung von Bundesgesetzen</li>
+      <li>Auflösung des Nationalrats und eines Landtags</li>
+      <li>Ernennung/Entlassung von Bundeskanzler und Regierungsmitgliedern</li>
+      <li>Amtsenthebung nach Misstrauensvotum</li>
+      <li>Angelobung der Landeshauptleute</li>
+      <li>Verleihung von Amtstiteln, Berufstiteln, Ehrenzeichen</li>
+    </ul>
+    <ul>
+      <li><strong>Notverordnungsrecht</strong> in Krisenfällen</li>
+      <li><strong>Oberbefehl über das Bundesheer</strong></li>
+      <li>Einberufung von Nationalrat und Bundesversammlung</li>
+      <li>Anordnung von Volksabstimmungen und Volksbefragungen</li>
+      <li>Ernennung von Richtern und Staatsanwälten</li>
+      <li><strong>Begnadigung</strong>, Niederschlagung von Verfahren</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== 3.2.2 ========== -->
+<section class="chap" id="k322">
+  <div class="chap-head"><div><span class="kicker">3.2.2</span><h2>Bundesregierung, Bundeskanzler, Bundesminister</h2></div><button class="done-btn" data-id="k322" aria-pressed="false">Gelernt</button></div>
+  <ul>
+    <li><strong>Bundesregierung</strong> = Bundeskanzler, Vizekanzler, Bundesminister</li>
+    <li>Beschlüsse im <strong>Ministerrat</strong>: <strong>einstimmig</strong>, bei Anwesenheit von mindestens der Hälfte der Mitglieder</li>
+    <li><strong>Keine fixe Amtsdauer</strong>: Nach jeder NR-Wahl tritt sie zurück und wird vom BP mit der Fortführung der Geschäfte betraut.</li>
+    <li><strong>Bundeskanzler:</strong> Vorsitz, aber <strong>kein Weisungsrecht</strong> gegenüber den anderen; Vertretung durch den Vizekanzler</li>
+    <li><strong>Minister:</strong> gleichberechtigt, weisungsfrei, für ihr Ministerium weisungsberechtigt und verantwortlich</li>
+  </ul>
+  <div class="grid2">
+    <div class="card"><h4>Aufgaben des Bundeskanzlers</h4><ul>
+      <li>Leitung des Bundeskanzleramts</li>
+      <li>Koordination der Ministerien</li>
+      <li>Krisenmanagement</li>
+      <li>Information der Öffentlichkeit</li>
+      <li>Vorschläge zur Ernennung/Entlassung von Ministern</li>
+      <li>Gegenzeichnung von Bundesgesetzen, Veröffentlichung im RIS</li>
+    </ul></div>
+    <div class="card"><h4>Stellung des Kanzlers</h4><p>Formal schwach. Weil der Ministerrat aber <strong>einstimmig</strong> entscheidet, brauchen alle Minister seine Zustimmung.</p><p><strong>Mächtigstes Druckmittel:</strong> Er kann dem BP ohne Begründung die <strong>Entlassung eines Ministers vorschlagen</strong>.</p></div>
+  </div>
+  <div class="sub">
+    <h3>Regierungsbildung</h3>
+    <ol class="steps">
+      <li><span>Nach der NR-Wahl beauftragt der BP üblicherweise die Person an der Spitze der <strong>stimmenstärksten Partei</strong>. Theoretisch kann er jeden ernennen, die Regierung muss aber vom NR zumindest <strong>geduldet</strong> werden.</span></li>
+      <li><span>Ohne absolute Mehrheit: <strong>Koalitionsverhandlungen</strong>.</span></li>
+      <li><span>Der Kanzler <strong>schlägt dem BP die Regierungsmitglieder vor</strong>, danach folgt die <strong>Angelobung</strong>. Zur Unterstützung gibt es <strong>Staatssekretäre</strong>.</span></li>
+      <li><span>Neubildung nach jeder NR-Wahl; <strong>Umbildung</strong> während der Periode möglich.</span></li>
+    </ol>
+  </div>
+  <h3>Regierungsformen</h3>
+  <div class="table-wrap"><table>
+    <tbody>
+      <tr><td>Alleinregierung: Mehrheitsregierung</td><td>Eine Partei stellt alle Mitglieder und hat die Mehrheit im NR</td></tr>
+      <tr><td>Alleinregierung: Minderheitsregierung</td><td>Eine Partei stellt alle Mitglieder, hat aber keine Mehrheit im NR</td></tr>
+      <tr><td>Große Koalition</td><td>Die beiden stimmenstärksten Parteien</td></tr>
+      <tr><td>Kleine Koalition</td><td>Andere als die beiden stimmenstärksten Parteien</td></tr>
+      <tr><td>Konzentrationsregierung</td><td>Alle im NR vertretenen Parteien</td></tr>
+      <tr><td>Expertenregierung</td><td>Sonderfall, z. B. unter Brigitte Bierlein (2019)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">Karl Popper: Es genügt, wenn eine schlechte Regierung wieder abgewählt werden kann.</p>
+</section>
+
+<!-- ========== 3.3.1 ========== -->
+<section class="chap" id="k331">
+  <div class="chap-head"><div><span class="kicker">3.3.1</span><h2>Grundlagen des Staatsbürgerschaftsrechts</h2></div><button class="done-btn" data-id="k331" aria-pressed="false">Gelernt</button></div>
+  <p class="prose"><strong>Rechtsgrundlagen:</strong> Staatsbürgerschaftsgesetz, Staatsbürgerschafts-VO, Staatsbürgerschaftsprüfungs-VO, Integrationsgesetz. Österreicher sind gleichzeitig <strong>Unionsbürger</strong>.</p>
+  <div class="sub">
+    <h3>Erwerb durch Abstammung</h3>
+    <p>Es gilt das <strong>Abstammungsprinzip</strong>.</p>
+    <ul>
+      <li><strong>Eheliche Kinder:</strong> ein Elternteil ist Österreicher/in</li>
+      <li><strong>Uneheliche Kinder:</strong> Mutter ist Österreicherin; ist nur der Vater Österreicher: Vaterschaftsanerkennung oder gerichtliche Feststellung <strong>binnen 8 Wochen</strong>, danach erleichterte Verleihung bis 14 Jahre</li>
+    </ul>
+  </div>
+  <div class="sub">
+    <h3>Verleihung: allgemeine Voraussetzungen</h3>
+    <div class="grid2">
+      <ul>
+        <li><strong>Rechtmäßiger, ununterbrochener Aufenthalt</strong> (Unterbrechungen bis 20 % schaden nicht)</li>
+        <li><strong>Gesicherter Lebensunterhalt</strong> (Richtsätze der Mindestpension; Sozialhilfe zählt nicht)</li>
+        <li><strong>Unbescholtenheit</strong>: keine Freiheitsstrafe wegen Vorsatzdelikt, kein Finanzvergehen, kein anhängiges Strafverfahren, keine schwerwiegenden Verwaltungsübertretungen</li>
+        <li><strong>Grundkenntnisse</strong> der Demokratie und Geschichte (Staatsbürgerschaftsprüfung), bejahende Einstellung zur Republik</li>
+      </ul>
+      <ul>
+        <li><strong>Ausreichende Deutschkenntnisse</strong></li>
+        <li><strong>Kein Aufenthaltsverbot</strong>, keine Ausweisung in den letzten 18 Monaten</li>
+        <li><strong>Keine Beeinträchtigung</strong> der internationalen Beziehungen</li>
+        <li><strong>Verzicht</strong> auf die bisherige Staatsbürgerschaft</li>
+        <li><strong>Gesamtverhalten</strong> und Ausmaß der Integration werden berücksichtigt</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sub">
+    <h3>Fristen (rechtmäßiger, ununterbrochener Aufenthalt)</h3>
+    <div class="table-wrap"><table>
+      <tbody>
+        <tr><td>30 Jahre</td><td>Hauptwohnsitz in Österreich</td></tr>
+        <tr><td>15 Jahre</td><td>bei nachhaltiger persönlicher und beruflicher Integration</td></tr>
+        <tr><td>10 Jahre</td><td>Hauptwohnsitz, wenn in Österreich geboren und seither staatenlos</td></tr>
+        <tr><td>10 Jahre</td><td>Asylberechtigte, oder 10 Jahre Aufenthalt, davon mindestens 5 Jahre niedergelassen</td></tr>
+        <tr><td>6 Jahre</td><td>Ehe oder eingetragene Partnerschaft mit Österreicher/in seit mindestens 5 Jahren</td></tr>
+        <tr><td>6 Jahre</td><td>Deutsch B2, oder B1 plus nachhaltige Integration (mind. 3 Jahre Ehrenamt, Beruf im Bildungs-, Gesundheits- oder Sozialbereich, Funktion in einer Interessenvertretung)</td></tr>
+        <tr><td>6 Jahre</td><td>EWR-Staatsangehörige, in Österreich geboren, außerordentliche Leistungen</td></tr>
+        <tr><td>keine Mindestfrist</td><td>Heimkehrende, Adoptivkinder, außerordentliche Leistungen im besonderen Interesse der Republik (z. B. Anna Netrebko 2006, durfte die russische Staatsbürgerschaft behalten)</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h4>Erwerb durch Anzeige</h4><ul>
+      <li>mindestens 15 Jahre unverschuldet <strong>fälschlich als Österreicher behandelt</strong></li>
+      <li><strong>vermeintliche Staatsbürger kraft Abstammung</strong> (Abstammung stellt sich als falsch heraus)</li>
+      <li><strong>Wiedergutmachung</strong> für NS-Verfolgte, seit 2020 auch für Nachkommen in gerader Linie</li>
+    </ul></div>
+    <div class="card"><h4>Erstreckung</h4><p>Auf Ehepartner, eingetragene Partner und Kinder. Verkürzt vor allem die Aufenthaltsdauer; ein gemeinsames Verfahren mit Sammelbescheid.</p></div>
+  </div>
+  <div class="box neutral"><span class="label">Judikatur</span>
+    <ul>
+      <li><strong>Sozialhilfe-Fall:</strong> Behörde lehnte ab (Lebensunterhalt angeblich nicht gesichert). Das LVwG Wien gab der Beschwerde statt: Der Antragsteller lebte nicht von der Sozialhilfe seiner Schwester und sein Einkommen reichte.</li>
+      <li><strong>Steuerhinterziehungs-Fall:</strong> Ablehnung bestätigt, auch vom VwGH. Finanzvergehen gelten nicht als geringfügig; 2 Jahre Wohlverhalten reichen nicht.</li>
+    </ul>
+  </div>
+  <div class="sub">
+    <h3>Verlust (4 Fälle)</h3>
+    <ol class="steps">
+      <li><span><strong>Erwerb einer fremden Staatsangehörigkeit</strong> (Beibehaltung nur ausnahmsweise)</span></li>
+      <li><span><strong>Eintritt in den Militärdienst eines fremden Staates</strong> (z. B. Fremdenlegion)</span></li>
+      <li><span><strong>Entziehung</strong>, z. B. bei Dienst für einen fremden Staat, erheblicher Schädigung des Ansehens Österreichs, Teilnahme an Kampfhandlungen einer organisierten bewaffneten Gruppe</span></li>
+      <li><span><strong>Verzicht</strong></span></li>
+    </ol>
+    <p class="muted">Judikatur: Eine Türkin (seit 1996 Österreicherin) hatte die türkische Staatsbürgerschaft wiedererlangt (Eintrag in der türkischen Wählerevidenz) und verlor deshalb die österreichische. LVwG Wien und VwGH bestätigten das.</p>
+  </div>
+  <div class="box"><span class="label">Zuständige Behörden</span>
+    <ul>
+      <li>1. Instanz: <strong>Landesregierung</strong> (Wien: MA 35) → Beschwerde ans <strong>Landesverwaltungsgericht</strong> → Revision an den <strong>VwGH</strong></li>
+      <li>Staatsbürgerschaftsnachweise stellen die <strong>Gemeinden</strong> aus (im Ausland Botschaften und Konsulate).</li>
+      <li>Fällt die alte Staatsbürgerschaft nicht automatisch weg: <strong>bescheidmäßige Zusicherung</strong>, dann Nachweis der Zurücklegung innerhalb von <strong>2 Jahren</strong>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== 4.2 ========== -->
+<section class="chap eu" id="k42">
+  <div class="chap-head"><div><span class="kicker">4.2</span><h2>Grundstrukturen der Europäischen Union</h2></div><button class="done-btn" data-id="k42" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Die EU ist eine wirtschaftliche und politische Vereinigung von <strong>27 Staaten</strong> mit gemeinsamen Werten und Zielen.</p>
+  <div class="grid2">
+    <div class="card"><h4>Supranationalität</h4><p>Mitgliedstaaten verlagern einen Teil ihrer Souveränität auf eine <strong>übergeordnete Ebene</strong> (Organe der EU). Verbindliche Beschlüsse auch gegen einzelne Staaten (z. B. Umweltpolitik).</p></div>
+    <div class="card"><h4>Intergouvernementalismus</h4><p>Zwischenstaatliche Zusammenarbeit der Regierungen, z. B. Sicherheitspolitik. Hier gilt <strong>Einstimmigkeit</strong>, jeder Staat hat ein <strong>Vetorecht</strong>.</p></div>
+  </div>
+  <ul>
+    <li>Anders als die UNO hat die EU eine <strong>Rechtsetzungsbefugnis</strong>; EU-Recht hat <strong>Anwendungsvorrang</strong> vor nationalem Recht.</li>
+    <li><strong>Mehrebenensystem:</strong> EU, Mitgliedstaaten, regionale Ebene (z. B. Bundesländer)</li>
+    <li><strong>Subsidiaritätsprinzip:</strong> Aufgaben erledigt möglichst die kleinste Einheit; die EU greift nur ein, wenn die untere Ebene es nicht lösen kann.</li>
+  </ul>
+  <h3>Zuständigkeiten</h3>
+  <div class="grid3">
+    <div class="card"><h4>Ausschließlich EU</h4><p>Zollunion, Außenhandelspolitik, Wettbewerbspolitik, Währungspolitik</p></div>
+    <div class="card"><h4>Geteilt</h4><p>Sozialpolitik, Verbraucherschutz, Energie, Sicherheit & Verteidigung, Landwirtschaft & Fischerei, Umwelt, Verkehr</p></div>
+    <div class="card"><h4>National</h4><p>Bildung, Kultur, Jugend, Zivilschutz, Sport</p></div>
+  </div>
+  <div class="box"><span class="label">Symbole</span><p>Europatag am <strong>9. Mai</strong> · Motto „<strong>In Vielfalt geeint</strong>“ · Flagge: 12 goldene Sterne auf blauem Grund · Hymne: Beethovens 9. Symphonie, inspiriert von Schillers „Ode an die Freude“, ohne Text · <strong>24 Amtssprachen</strong></p></div>
+</section>
+
+<!-- ========== 4.2.1 ========== -->
+<section class="chap eu" id="k421">
+  <div class="chap-head"><div><span class="kicker">4.2.1</span><h2>Der Vertrag von Lissabon</h2></div><button class="done-btn" data-id="k421" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Auch <strong>Reformvertrag</strong> genannt. Entstand, nachdem die „Verfassung für die EU“ gescheitert war.</p>
+  <ul>
+    <li>Es gibt jetzt den <strong>EU-Vertrag (EUV)</strong> und den <strong>Vertrag über die Arbeitsweise der EU (AEUV)</strong>; das <strong>3-Säulen-Modell wurde aufgelöst</strong>.</li>
+    <li><strong>Art. 50 EUV</strong> regelt erstmals den <strong>freiwilligen Austritt</strong>.</li>
+    <li>Die EU ist <strong>Rechtsnachfolgerin</strong> der Gemeinschaft und hat <strong>uneingeschränkte Rechtspersönlichkeit</strong> (kann selbst Verträge schließen).</li>
+    <li><strong>Neue Ämter:</strong> ständiger <strong>Präsident des Europäischen Rates</strong> (2,5 Jahre) und <strong>Hoher Vertreter für Außen- und Sicherheitspolitik</strong> („EU-Außenminister“)</li>
+    <li><strong>Europäisches Parlament gestärkt:</strong> mehr Mitsprache (auch Justiz und Inneres) und mehr Kontrolle der Kommission</li>
+    <li>Im Rat gilt die <strong>doppelte Mehrheit</strong>.</li>
+    <li><strong>Grundrechtecharta</strong> wird verbindlich: rund 54 Artikel in 6 Kapiteln (laut Buch nicht ratifiziert von Polen und Großbritannien)</li>
+    <li><strong>Europäische Bürgerinitiative:</strong> <strong>1 Million</strong> Bürger aus <strong>mindestens 7 Staaten</strong> können die Kommission zu einem Gesetzesvorschlag auffordern.</li>
+  </ul>
+  <div class="grid3">
+    <div class="card"><h4>Mehr Demokratie</h4><p>Stärkeres EU-Parlament, mehr Mitsprache der nationalen Parlamente, Bürgerbegehren, doppelte Mehrheit</p></div>
+    <div class="card"><h4>Mehr Transparenz</h4><p>Klarer Kompetenzkatalog, öffentliche Ratssitzungen bei Gesetzgebung</p></div>
+    <div class="card"><h4>Mehr Effektivität</h4><p>Ratspräsident (2,5 Jahre), Hoher Vertreter, Europäischer Auswärtiger Dienst, mehr Mehrheits- statt Einstimmigkeitsentscheidungen</p></div>
+  </div>
+</section>
+
+<!-- ========== 4.2.2 ========== -->
+<section class="chap eu" id="k422">
+  <div class="chap-head"><div><span class="kicker">4.2.2</span><h2>Der Binnenmarkt</h2></div><button class="done-btn" data-id="k422" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Ein einheitlicher Markt ohne Binnengrenzen mit den <strong>4 Grundfreiheiten</strong>.</p>
+  <div class="grid2">
+    <div class="card"><h4>1. Freier Warenverkehr</h4><p>Keine Zölle, keine mengenmäßigen Beschränkungen, keine Maßnahmen gleicher Wirkung; Abbau physischer und technischer Hindernisse; gegenseitige Anerkennung.</p></div>
+    <div class="card"><h4>2. Freier Personenverkehr</h4><p>Arbeitnehmerfreizügigkeit (inkl. Zuzug und Aufenthalt der Familie) und <strong>Niederlassungsfreiheit</strong> (dauerhaft in einem anderen Staat tätig sein).</p></div>
+    <div class="card"><h4>3. Dienstleistungsfreiheit</h4><p>Vorübergehend Leistungen in einem anderen Staat erbringen, Sitz bleibt im Herkunftsland.</p></div>
+    <div class="card"><h4>4. Freier Kapitalverkehr</h4><p>Effiziente Investitionen; Voraussetzung für den Euro und die Wirtschafts- und Währungsunion (WWU).</p></div>
+  </div>
+  <div class="box"><span class="label">Judikatur: Cassis-de-Dijon-Prinzip (EuGH Rs 120/78)</span>
+    <p>Deutschland verlangte für Liköre mindestens 25 Vol.-%, deshalb wurde der französische Johannisbeerlikör (15–20 %) verboten. Der EuGH entschied: Ein Produkt, das in einem EU-Staat <strong>rechtmäßig im Verkehr</strong> ist, darf <strong>in allen Mitgliedstaaten verkauft</strong> werden. Einschränkungen nur aus <strong>zwingenden öffentlichen Interessen</strong> (z. B. Gesundheit, Verbraucherschutz).</p>
+  </div>
+  <p class="muted">Eurozone (Stand 2026): 21 Mitglieder. Bulgarien hat den Euro am 1. Jänner 2026 eingeführt.</p>
+</section>
+
+<!-- ========== 4.2.3 ========== -->
+<section class="chap eu" id="k423">
+  <div class="chap-head"><div><span class="kicker">4.2.3</span><h2>Beitritt und Austritt</h2></div><button class="done-btn" data-id="k423" aria-pressed="false">Gelernt</button></div>
+  <h3>Kopenhagener Kriterien</h3>
+  <div class="grid3">
+    <div class="card"><h4>Politisch</h4><p>Gemeinsame Werte, stabile demokratische und rechtsstaatliche Ordnung, Menschenrechte und Minderheitenschutz</p></div>
+    <div class="card"><h4>Wirtschaftlich</h4><p>Funktionierende Marktwirtschaft, die dem Wettbewerbsdruck und den Marktkräften standhält</p></div>
+    <div class="card"><h4>Rechtlich (acquis)</h4><p>Übernahme des gesamten bisherigen EU-Rechts und Umsetzung in Justiz und Verwaltung</p></div>
+  </div>
+  <div class="sub">
+    <h3>Ablauf eines Beitritts</h3>
+    <ol class="steps">
+      <li><span><strong>Antrag an den Rat</strong>; der Rat unterrichtet das EP und die nationalen Parlamente.</span></li>
+      <li><span>Die <strong>Kommission</strong> gibt eine <strong>Stellungnahme</strong> zur Eignung ab.</span></li>
+      <li><span>Der Rat verleiht <strong>einstimmig</strong> den <strong>Kandidatenstatus</strong> und beschließt, ebenfalls einstimmig, die <strong>Beitrittsverhandlungen</strong>.</span></li>
+      <li><span>Verhandlung <strong>kapitelweise</strong>: Das EU-Recht (Besitzstand) hat <strong>35 Kapitel</strong>. Dauert mehrere Jahre; die Kommission prüft in jährlichen Fortschrittsberichten. Kandidaten erhalten finanzielle, verwaltungstechnische und fachliche Hilfe.</span></li>
+      <li><span><strong>EP stimmt mit absoluter Mehrheit</strong> zu, <strong>Rat einstimmig</strong>; dann Unterzeichnung und <strong>Ratifikation</strong> durch alle Vertragsstaaten.</span></li>
+    </ol>
+  </div>
+  <div class="box neutral"><span class="label">Beitrittskandidaten</span><p>Türkei (seit 1999), Nordmazedonien (2005), Montenegro (2010), Serbien (2012), Albanien (2014), Bosnien und Herzegowina, Ukraine und Moldau (2022), Georgien (2023). Potenzieller Kandidat: Kosovo. Antrag zurückgezogen: Island (2015).</p></div>
+  <div class="sub">
+    <h3>Austritt (Art. 50 EUV)</h3>
+    <p>Bis zum Vertrag von Lissabon nur über völkerrechtliche Regeln möglich; seither ausdrücklich geregelt. Niemand kann gezwungen werden, in der EU zu bleiben.</p>
+    <ol class="steps">
+      <li><span>Mitteilung der Absicht an den <strong>Europäischen Rat</strong></span></li>
+      <li><span>Verhandlung eines <strong>Austrittsabkommens</strong>, vorgesehen sind <strong>maximal 2 Jahre</strong> (verlängerbar)</span></li>
+      <li><span><strong>Zustimmung des EP</strong>, dann Abschluss durch den <strong>Rat mit qualifizierter Mehrheit</strong></span></li>
+    </ol>
+    <div class="grid2">
+      <div class="box"><span class="label">Qualifizierte Mehrheit</span><p>Besondere Mehrheit mit erhöhten Anforderungen an Anwesenheit und Zustimmung.</p></div>
+      <div class="box"><span class="label">Brexit</span><p>Referendum 2016, Austritt am <strong>31.1.2020</strong>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Lernkarten ========== -->
+<section class="chap" id="lernkarten">
+  <div class="chap-head"><div><span class="kicker">Üben</span><h2>Lernkarten</h2></div><button class="done-btn" data-id="lernkarten" aria-pressed="false">Gelernt</button></div>
+  <p class="prose">Tippe auf eine Karte, um die Antwort zu sehen.</p>
+  <div class="toolbar">
+    <button class="btn" id="show-all" type="button">Alle aufdecken</button>
+    <button class="btn" id="hide-all" type="button">Alle verdecken</button>
+    <button class="btn" id="shuffle" type="button">Mischen</button>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+</main>
+</div>
+
+<script>
+const CARDS = [
+  ["Welche 4 Kontrollformen gibt es?", "Politische, rechtliche, wirtschaftliche/finanzielle Kontrolle und Missstandskontrolle."],
+  ["Wie viele Abgeordnete können einen U-Ausschuss verlangen?", "Ein Viertel der Abgeordneten (Minderheitenrecht)."],
+  ["Wie viele Abgeordnete können eine Rechnungshofprüfung verlangen?", "Mindestens 20 Abgeordnete."],
+  ["Welche Gemeinden prüft der Rechnungshof?", "Gemeinden mit mehr als 10.000 Einwohnern."],
+  ["Kann der Rechnungshof Sanktionen verhängen?", "Nein. Er erzeugt öffentliche Diskussion und Reformdruck."],
+  ["Volksanwaltschaft: Mitglieder und Amtszeit?", "3 Mitglieder, gewählt auf 6 Jahre."],
+  ["Wann wird die Volksanwaltschaft tätig?", "Bei behaupteten Missständen, wenn kein Rechtsmittel (mehr) offensteht, oder von Amts wegen."],
+  ["Voraussetzungen für ein Misstrauensvotum?", "Anwesenheit ½ der Abgeordneten, Mehrheit der abgegebenen Stimmen. Folge: Amtsenthebung durch den BP."],
+  ["Was bedeutet Zitationsrecht?", "NR, BR und Ausschüsse können die Anwesenheit von Regierungsmitgliedern verlangen."],
+  ["Drei Eigenschaften von Richter/innen?", "Unabhängig (weisungsfrei), unabsetzbar, unversetzbar."],
+  ["Was bedeutet freie Beweiswürdigung?", "Keine festen Beweisregeln; das Gericht entscheidet nach freier Überzeugung."],
+  ["In welchen 3 Fällen entscheidet der VwGH?", "Revisionen (Rechtsfrage grundsätzlicher Bedeutung), Säumnisbeschwerden, Kompetenzkonflikte."],
+  ["Unterschied VwGH und VfGH bei Gesetzen?", "Nur der VfGH kann verfassungswidrige Gesetze und gesetzwidrige Verordnungen aufheben."],
+  ["Wer prüft EU-Verordnungen?", "Nur der Europäische Gerichtshof (EuGH)."],
+  ["Was ist ein Individualantrag?", "Eine Person ist unmittelbar durch eine Norm verletzt und ein Verfahren als Umweg ist ihr unzumutbar."],
+  ["Hoheits- vs. Privatwirtschaftsverwaltung?", "Hoheit: Rechtsakte mit Befehls- und Zwangsgewalt. Privatwirtschaft: Staat handelt wie Privatperson (Verträge)."],
+  ["Unmittelbare vs. mittelbare Bundesverwaltung?", "Unmittelbar: eigene Bundesbehörden (Ausnahme). Mittelbar: Landesorgane vollziehen Bundessachen, weisungsgebunden an Bundesminister (Regel)."],
+  ["Eigener vs. übertragener Wirkungsbereich?", "Eigener: weisungsfrei, nur Aufsicht. Übertragener: weisungsgebunden, handelt für Bund/Land."],
+  ["Wer erteilt die Baubewilligung?", "Der Bürgermeister bzw. die Bürgermeisterin."],
+  ["Amtshaftung vs. Organhaftung?", "Amtshaftung: Organ schädigt Bürger, Staat haftet. Organhaftung: Organ schädigt den Staat, Organ haftet."],
+  ["Bundespräsident: Amtsdauer, Mindestalter?", "6 Jahre, einmalige Wiederwahl; kandidieren ab 35."],
+  ["Wer gelobt den Bundespräsidenten an?", "Die Bundesversammlung."],
+  ["Wie entscheidet der Ministerrat?", "Einstimmig (bei Anwesenheit von mindestens der Hälfte der Mitglieder)."],
+  ["Mächtigstes Druckmittel des Bundeskanzlers?", "Er kann dem BP die Entlassung eines Ministers vorschlagen."],
+  ["Große vs. kleine Koalition?", "Groß: die beiden stimmenstärksten Parteien. Klein: andere Parteien."],
+  ["Nach wie vielen Jahren Hauptwohnsitz gibt es ohne weitere Gründe die Staatsbürgerschaft?", "Nach 30 Jahren."],
+  ["4 Fälle des Verlusts der Staatsbürgerschaft?", "Erwerb fremder Staatsangehörigkeit, fremder Militärdienst, Entziehung, Verzicht."],
+  ["Zuständige Behörde für Staatsbürgerschaft in 1. Instanz?", "Die Landesregierung (Wien: MA 35)."],
+  ["Was bedeutet Supranationalität?", "Staaten verlagern Souveränität auf eine übergeordnete Ebene (EU-Organe)."],
+  ["Was ist das Subsidiaritätsprinzip?", "Aufgaben erledigt möglichst die kleinste Einheit; die EU greift nur ein, wenn nötig."],
+  ["Was regelt Art. 50 EUV?", "Den freiwilligen Austritt aus der EU."],
+  ["Europäische Bürgerinitiative?", "1 Million Bürger aus mindestens 7 Staaten fordern die Kommission zu einem Gesetzesvorschlag auf."],
+  ["Die 4 Grundfreiheiten?", "Freier Verkehr von Personen, Waren, Dienstleistungen und Kapital."],
+  ["Was besagt das Cassis-de-Dijon-Prinzip?", "Was in einem EU-Staat rechtmäßig verkauft wird, darf in allen verkauft werden (Ausnahme: zwingende öffentliche Interessen)."],
+  ["Die 3 Kopenhagener Kriterien?", "Politische, wirtschaftliche und rechtliche (acquis) Kriterien."],
+  ["In wie viele Kapitel ist das EU-Recht für Beitrittsverhandlungen geteilt?", "35 Kapitel."],
+  ["Mehrheiten beim Beitritt?", "EP: absolute Mehrheit. Rat: einstimmig."],
+  ["Mehrheit im Rat beim Austrittsabkommen?", "Qualifizierte Mehrheit (nach Zustimmung des EP)."]
+];
+
+const cardsEl = document.getElementById("cards");
+function renderCards(list) {
+  cardsEl.innerHTML = "";
+  list.forEach(([q, a]) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "flash";
+    b.setAttribute("aria-expanded", "false");
+    b.innerHTML = '<span class="q"></span><span class="hint">Antwort anzeigen</span><span class="a"></span>';
+    b.querySelector(".q").textContent = q;
+    b.querySelector(".a").textContent = a;
+    b.addEventListener("click", () => b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true"));
+    cardsEl.appendChild(b);
+  });
+}
+renderCards(CARDS);
+document.getElementById("show-all").addEventListener("click", () => cardsEl.querySelectorAll(".flash").forEach(c => c.setAttribute("aria-expanded", "true")));
+document.getElementById("hide-all").addEventListener("click", () => cardsEl.querySelectorAll(".flash").forEach(c => c.setAttribute("aria-expanded", "false")));
+document.getElementById("shuffle").addEventListener("click", () => {
+  const arr = CARDS.slice();
+  for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+  renderCards(arr);
+});
+
+// Lernfortschritt (nur in diesem Browser gespeichert)
+const KEY = "lernskript-staat-eu-done";
+let done = {};
+try { done = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { done = {}; }
+const buttons = document.querySelectorAll(".done-btn");
+function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+function update() {
+  let n = 0;
+  buttons.forEach(btn => {
+    const id = btn.dataset.id, on = !!done[id];
+    if (on) n++;
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.textContent = on ? "✓ Gelernt" : "Gelernt";
+    const link = document.querySelector('.toc-link[data-target="' + id + '"]');
+    if (link) link.classList.toggle("done", on);
+  });
+  document.getElementById("progress-text").textContent = n + " von " + buttons.length + " Abschnitten gelernt";
+  document.getElementById("progress-bar").style.width = (buttons.length ? (n / buttons.length * 100) : 0) + "%";
+}
+buttons.forEach(btn => btn.addEventListener("click", () => { done[btn.dataset.id] = !done[btn.dataset.id]; save(); update(); }));
+update();
+</script>
+</body>
+</html>
